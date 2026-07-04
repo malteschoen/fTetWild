@@ -86,13 +86,16 @@ if(NOT TARGET geogram::geogram)
     )
 
     # --- Final Recommended Configuration ---
-    # Set the platform to force a static build
     if(MSVC)
         set(GEO_PLATFORM "Win-vs-generic")
     elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
         set(GEO_PLATFORM "Darwin-clang")
     else()
-        set(GEO_PLATFORM "Linux64-gcc")
+        if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64" OR CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
+             set(GEO_PLATFORM "Linux64-aarch64-gcc-dynamic")
+        else()
+             set(GEO_PLATFORM "Linux64-x86_64-gcc-dynamic")
+        endif()
     endif()
 
     set(VORPALINE_PLATFORM ${GEO_PLATFORM})
